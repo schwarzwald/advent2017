@@ -1,10 +1,11 @@
 const fs = require('fs');
+const processor = require('./'+process.argv[2]);
+const input = process.argv[3];
 
-const execute = (filename, processor) => {
-  fs.readFile(filename, 'utf8', function(err, data) {
-    if (err) throw err;
-    console.log(processor(data));
-  });
-}
+fs.readFile(input, 'utf8', function(err, data) {
+  if (err) {
+    throw err;
+  }
 
-module.exports.execute = execute;
+  console.log(processor(data));
+});
