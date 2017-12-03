@@ -7,5 +7,7 @@ fs.readFile(input, 'utf8', function(err, data) {
     throw err;
   }
 
+  console.time("execution");
   console.log(processor(data));
+  console.timeEnd("execution");
 });
