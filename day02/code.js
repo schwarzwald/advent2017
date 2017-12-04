@@ -1,4 +1,4 @@
 module.exports = input =>
-  input.split('\r\n').reduce((acc, curr) =>
-    acc + Math.max(...curr.split(/\s/))-Math.min(...curr.split(/\s/)),
-  0);
+  input.split('\r\n')
+       .map(a => a.split(/\s/))
+       .reduce((acc, curr) => acc + Math.max(...curr)-Math.min(...curr), 0);
