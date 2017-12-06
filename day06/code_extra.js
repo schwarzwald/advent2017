@@ -1,8 +1,6 @@
 module.exports = input => {
   let buffer = input.split(/\s/).map(Number);
   let history = [];
-  let cycles = 0;
-  
   
   while (!history.includes(buffer.join())) {
     history.push(buffer.join());
@@ -16,8 +14,6 @@ module.exports = input => {
     for (let i = 0; i < buffer.length; i++) {
       buffer[i] += ((i > idx && i <= idx + rem) || (i + buffer.length > idx && i + buffer.length <= idx + rem))? inc + 1: inc;
     }
-    
-    cycles++;
   }
   
   return history.length - history.indexOf(buffer.join());
