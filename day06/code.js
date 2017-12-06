@@ -20,5 +20,5 @@ module.exports = input => {
     cycles++;
   }
   
-  return history.length - history.indexOf(buffer.join()) - 1;
+  return cycles;
 }
