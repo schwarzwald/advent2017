@@ -6,7 +6,7 @@ module.exports = input => {
     layers.set(+index, +depth);
   });
   
-  let max = Math.max(...[...layers.keys()]);
+  let max = Math.max(...layers.keys());
   let isCaught = false;
   let delay = 0;
   

@@ -6,7 +6,7 @@ module.exports = input => {
     layers.set(+index, +depth);
   });
   
-  let max = Math.max(...[...layers.keys()]);
+  let max = Math.max(...layers.keys());
   let severity = 0;
   
   for (let i = 0; i <= max; i++) {
