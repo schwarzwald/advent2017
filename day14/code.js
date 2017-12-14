@@ -2,7 +2,7 @@ const hash = require('../day10/code_extra');
 
 module.exports = input => {
   let used = 0;
-  
+
   for (let i = 0; i < 128; i++) {
     let hashString = hash(`${input}-${i}`);
     for (let j = 0; j < 8; j++) {
@@ -14,6 +14,6 @@ module.exports = input => {
       }
     }
   }
-  
+
   return used;
 }
