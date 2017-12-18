@@ -1,4 +1,5 @@
 class Program {
+
   constructor(id, instructions) {
     this.registers = new Map();
     this.registers.set('p', id);
@@ -27,6 +28,8 @@ class Program {
   }
   
   receive(reg) {
+    this.isWaiting = !this.queue.length;
+    
     if (this.queue.length) {
       this.registers.set(reg, this.queue.shift());
     }
@@ -35,44 +38,20 @@ class Program {
   exec() {
     let [,type, arg1, arg2] = /(\w+)\s([\d\w]+)\s?(.*)?/.exec(this.instructions[this.ip]);
     
-    if (type == 'set') {
-      this.registers.set(arg1, this.getVal(arg2));
+    switch (type) {
+      case 'set': this.registers.set(arg1, this.getVal(arg2)); break;
+      case 'add': this.registers.set(arg1, +this.getVal(arg1) + +this.getVal(arg2)); break;
+      case 'mul': this.registers.set(arg1, +this.getVal(arg1) * +this.getVal(arg2)); break;
+      case 'mod': this.registers.set(arg1, +this.getVal(arg1) % +this.getVal(arg2)); break;
+      case 'jgz': this.ip += (this.getVal(arg1) > 0)? this.getVal(arg2): 1; return;
+      case 'snd': this.send(this.receiver, this.getVal(arg1)); break;
+      case 'rcv': this.receive(arg1); break;
     }
     
-    if (type == 'add') {
-      this.registers.set(arg1, +this.getVal(arg1) + +this.getVal(arg2));
-    }
-    
-    if (type == 'mul') {
-      this.registers.set(arg1, +this.getVal(arg1) * +this.getVal(arg2));
-    }
-    
-    if (type == 'mod') {
-      this.registers.set(arg1, +this.getVal(arg1) % +this.getVal(arg2));
-    }
-    
-    if (type == 'jgz') {
-      if (this.getVal(arg1) > 0) {
-        this.ip += this.getVal(arg2);
-        return;
-      }
-    }
-    
-    if (type == 'snd') {
-      this.send(this.receiver, this.getVal(arg1));
-    }
-    
-    if (type == 'rcv') {
-      if (this.queue.length) {
-        this.receive(arg1);
-        this.isWaiting = false;
-      } else {
-        this.isWaiting = true;
-        return;
-      }
+    if (!this.isWaiting) {
+      this.ip++;
     }
   
-    this.ip++;
   }
 
 }
