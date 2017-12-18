@@ -1,11 +1,12 @@
 class Program {
-  constructor(id) {
+  constructor(id, instructions) {
     this.registers = new Map();
     this.registers.set('p', id);
     this.queue = [];
     this.ip = 0;
     this.isWaiting = false;
     this.sendCount = 0;
+    this.instructions = instructions;
   }
   
   setReceiver(program) {
@@ -31,8 +32,8 @@ class Program {
     }
   }
   
-  exec(instruction) {
-    let [,type, arg1, arg2] = /(\w+)\s([\d\w]+)\s?(.*)?/.exec(instruction);
+  exec() {
+    let [,type, arg1, arg2] = /(\w+)\s([\d\w]+)\s?(.*)?/.exec(this.instructions[this.ip]);
     
     if (type == 'set') {
       this.registers.set(arg1, this.getVal(arg2));
@@ -79,15 +80,15 @@ class Program {
 module.exports = input => {
   let instructions = input.split('\r\n');
   
-  let p0 = new Program(0);
-  let p1 = new Program(1);
+  let p0 = new Program(0, instructions);
+  let p1 = new Program(1, instructions);
   
   p0.setReceiver(p1);
   p1.setReceiver(p0);
 
   while(!p0.isWaiting || !p1.isWaiting) {
-    p0.exec(instructions[p0.ip]);
-    p1.exec(instructions[p1.ip]);
+    p0.exec();
+    p1.exec();
   } 
   
   return p1.sendCount;
