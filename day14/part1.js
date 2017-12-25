@@ -1,4 +1,4 @@
-const hash = require('../day10/code_extra');
+const hash = require('../day10/part2');
 
 module.exports = input => {
   let used = 0;
